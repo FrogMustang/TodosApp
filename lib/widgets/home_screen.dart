@@ -4,7 +4,7 @@ import 'package:todos_app/bloc/todos_bloc.dart';
 import 'package:todos_app/colors.dart';
 import 'package:todos_app/models/todos.dart';
 import 'package:todos_app/repositories/todos_repository.dart';
-import 'package:todos_app/utils.dart';
+import 'package:todos_app/widgets/create_todo_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,9 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
       )..add(const AllTodosFetched()),
       child: Scaffold(
         backgroundColor: CustomColors.white,
-        body: BlocBuilder<TodosBloc, TodosState>(
-          builder: (context, state) {
-            return Container(
+        body: Builder(
+          builder: (context) {
+            return SizedBox(
               height: MediaQuery.sizeOf(context).height,
               width: MediaQuery.sizeOf(context).width,
               child: Column(
@@ -38,11 +38,42 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Expanded(
-                    child: TodosList(
-                      state: state,
+                  const Expanded(
+                    child: TodosList(),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // CREATE BUTTON
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateTodoScreen(),
+                        ),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.amber,
+                      ),
+                      padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(
+                          horizontal: 50,
+                          vertical: 5,
+                        ),
+                      ),
+                    ),
+                    child: const Text(
+                      'Create TODO',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.white,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 10),
                 ],
               ),
             );
@@ -53,90 +84,76 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class TodosList extends StatelessWidget {
-  const TodosList({
-    super.key,
-    required this.state,
-  });
-
-  final TodosState state;
+class TodosList extends StatefulWidget {
+  const TodosList({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemCount: state.todos.length,
-      itemBuilder: (context, index) {
-        return TodoItem(todo: state.todos[index]);
-      },
-    );
-  }
+  State<TodosList> createState() => _TodosListState();
 }
 
-class TodoItem extends StatefulWidget {
-  const TodoItem({
-    super.key,
-    required this.todo,
-  });
-
-  final Todo todo;
-
-  @override
-  State<TodoItem> createState() => _TodoItemState();
-}
-
-class _TodoItemState extends State<TodoItem> {
-  late bool completed;
-
-  @override
-  void initState() {
-    super.initState();
-    completed = widget.todo.completed;
-  }
-
+class _TodosListState extends State<TodosList> {
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: completed ? 0.3 : 1.0,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 25,
-          vertical: 15,
-        ),
-        margin: const EdgeInsets.only(
-          top: 20,
-        ),
-        decoration: BoxDecoration(
-          color:
-              CustomColors.colors[widget.todo.id % CustomColors.colors.length],
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Row(
-          children: [
-            Checkbox(
-              value: completed,
-              onChanged: (_) {
-                setState(() {
-                  completed = !completed;
-                });
-              },
-            ),
-            const SizedBox(width: 10),
-            Flexible(
-              child: Text(
-                widget.todo.title,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: const TextStyle(
-                  color: CustomColors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+    return BlocBuilder<TodosBloc, TodosState>(
+      builder: (context, state) {
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          itemCount: state.todos.length,
+          itemBuilder: (context, index) {
+            final Todo todo = state.todos[index];
+            bool completed = todo.completed;
+
+            return Opacity(
+              opacity: completed ? 0.3 : 1.0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 25,
+                  vertical: 15,
+                ),
+                margin: const EdgeInsets.only(
+                  top: 20,
+                ),
+                decoration: BoxDecoration(
+                  color:
+                      CustomColors.colors[todo.id % CustomColors.colors.length],
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        todo.title,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: const TextStyle(
+                          color: CustomColors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'ID: ' + todo.id.toString(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: const TextStyle(
+                            color: CustomColors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+            );
+          },
+        );
+      },
     );
   }
 }

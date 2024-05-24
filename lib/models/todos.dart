@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'todos.g.dart';
 
 @JsonSerializable()
@@ -15,6 +16,8 @@ class Todo extends Equatable {
   });
 
   factory Todo.fromJSON(json) => _$TodoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TodoToJson(this);
 
   @override
   List<Object?> get props => [

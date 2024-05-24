@@ -48,4 +48,45 @@ class ITodoRepository implements TodosRepository {
       );
     }
   }
+
+  @override
+  Future<Either<String, bool>> createTodo({
+    required Todo todo,
+  }) async {
+    try {
+      logger.i('CREATING TODO...');
+
+      Response res = await _client.post(
+        Uri.https(
+          'jsonplaceholder.typicode.com',
+          'todos',
+        ),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(todo.toJson()),
+      );
+
+      // we use 201 because the API fakes the creation
+      if (res.statusCode == 201) {
+        return const Right(true);
+      }
+
+      return Left(
+        'Failed to CREATE new todo. ERROR: \n'
+        '${res.reasonPhrase}',
+      );
+    } catch (error, stackTrace) {
+      logger.e(
+        'Failed to CREATE new todo.',
+        error: error,
+        stackTrace: stackTrace,
+      );
+
+      return Left(
+        'Failed to CREATE new todo. ERROR: \n'
+        '$error',
+      );
+    }
+  }
 }

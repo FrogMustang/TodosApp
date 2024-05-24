@@ -7,6 +7,7 @@ import 'package:todos_app/colors.dart';
 final Logger logger = Logger(
   printer: PrettyPrinter(
     methodCount: 5,
+    errorMethodCount: 15,
   ),
 );
 
