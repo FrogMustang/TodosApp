@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todos_app/bloc/todos_bloc.dart';
 import 'package:todos_app/colors.dart';
 import 'package:todos_app/models/todos.dart';
-import 'package:todos_app/utils.dart';
 import 'package:todos_app/widgets/create_todo_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -109,8 +108,8 @@ class _TodosListState extends State<TodosList> {
                   top: 20,
                 ),
                 decoration: BoxDecoration(
-                  color: CustomColors
-                      .colors[todo.id % CustomColors.colors.length],
+                  color:
+                      CustomColors.colors[todo.id % CustomColors.colors.length],
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Column(

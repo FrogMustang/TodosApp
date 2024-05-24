@@ -31,3 +31,47 @@ Future<void> setUpGetIt() async {
     ),
   );
 }
+
+class CustomSnackBar {
+  const CustomSnackBar();
+
+  static void show(
+    BuildContext context,
+    String message, {
+    bool isError = false,
+    int durationSec = 2,
+  }) {
+    FocusScope.of(context).unfocus();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.symmetric(
+          horizontal: 25,
+          vertical: 10,
+        ),
+        padding: EdgeInsets.zero,
+        backgroundColor: isError ? Colors.red : CustomColors.turq,
+        content: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 5,
+          ),
+          child: Center(
+            child: Text(
+              message.toUpperCase(),
+              style: const TextStyle(
+                color: CustomColors.white,
+                fontWeight: FontWeight.w600,
+              ),
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+        duration: Duration(seconds: durationSec),
+      ),
+    );
+  }
+}
