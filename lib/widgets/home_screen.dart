@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todos_app/bloc/todos_bloc.dart';
 import 'package:todos_app/colors.dart';
 import 'package:todos_app/models/todos.dart';
-import 'package:todos_app/repositories/todos_repository.dart';
+import 'package:todos_app/utils.dart';
 import 'package:todos_app/widgets/create_todo_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,69 +16,64 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TodosBloc(
-        ITodoRepository(),
-      )..add(const AllTodosFetched()),
-      child: Scaffold(
-        backgroundColor: CustomColors.white,
-        body: Builder(
-          builder: (context) {
-            return SizedBox(
-              height: MediaQuery.sizeOf(context).height,
-              width: MediaQuery.sizeOf(context).width,
-              child: Column(
-                children: [
-                  const SizedBox(height: 80),
-                  const Text(
-                    'ALL TODOs',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
+    return Scaffold(
+      backgroundColor: CustomColors.white,
+      body: Builder(
+        builder: (context) {
+          return SizedBox(
+            height: MediaQuery.sizeOf(context).height,
+            width: MediaQuery.sizeOf(context).width,
+            child: Column(
+              children: [
+                const SizedBox(height: 80),
+                const Text(
+                  'ALL TODOs',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
                   ),
-                  const SizedBox(height: 20),
-                  const Expanded(
-                    child: TodosList(),
-                  ),
-                  const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
+                const Expanded(
+                  child: TodosList(),
+                ),
+                const SizedBox(height: 20),
 
-                  // CREATE BUTTON
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CreateTodoScreen(),
-                        ),
-                      );
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        Colors.amber,
+                // CREATE BUTTON
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CreateTodoScreen(),
                       ),
-                      padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(
-                          horizontal: 50,
-                          vertical: 5,
-                        ),
-                      ),
+                    );
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      Colors.amber,
                     ),
-                    child: const Text(
-                      'Create TODO',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: CustomColors.white,
-                        fontWeight: FontWeight.w800,
+                    padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(
+                        horizontal: 50,
+                        vertical: 5,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                ],
-              ),
-            );
-          },
-        ),
+                  child: const Text(
+                    'Create TODO',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: CustomColors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -114,8 +109,8 @@ class _TodosListState extends State<TodosList> {
                   top: 20,
                 ),
                 decoration: BoxDecoration(
-                  color:
-                      CustomColors.colors[todo.id % CustomColors.colors.length],
+                  color: CustomColors
+                      .colors[todo.id % CustomColors.colors.length],
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Column(

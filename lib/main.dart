@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todos_app/bloc/todos_bloc.dart';
+import 'package:todos_app/utils.dart';
 import 'package:todos_app/widgets/home_screen.dart';
 
-void main() {
+void main() async {
+  await setUpGetIt();
   runApp(const MyApp());
 }
 
@@ -11,9 +15,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Todos App',
-      home: HomeScreen(),
+    return BlocProvider(
+      create: (context) => getIt<TodosBloc>()
+        ..add(
+          const AllTodosFetched(),
+        ),
+      child: const MaterialApp(
+        title: 'Todos App',
+        home: HomeScreen(),
+      ),
     );
   }
 }

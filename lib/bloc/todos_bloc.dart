@@ -81,6 +81,7 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
       },
       (created) {
         if (created) {
+          print("TODOS BEFORE: ${state.todos}");
           final List<Todo> newTodos = List.from(state.todos);
           newTodos.insert(0, event.todo);
 
