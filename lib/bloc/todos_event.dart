@@ -22,3 +22,20 @@ class TodoCreated extends TodosEvent {
   @override
   List<Object?> get props => [todo];
 }
+
+class TodoCompletedChanged extends TodosEvent {
+  const TodoCompletedChanged({
+    required this.index,
+    required this.completed,
+  });
+
+  /// Index inside the list of TODOs. Used to update the state
+  final int index;
+  final bool completed;
+
+  @override
+  List<Object?> get props => [
+        index,
+        completed,
+      ];
+}

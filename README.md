@@ -1,16 +1,11 @@
 # todos_app
 
-A new Flutter project.
+This project was created to showcase a small app that allows the user to track their TODOs. It also allows them to create a new TODO.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+### Purpose
+The purpose of the app was to display a nice code architecture and my overall preferred tech stack and coding style.
 
-A few resources to get you started if this is your first Flutter project:
+The project integrates a demo API of to TODOs which is limited, therefore all features are quite limited because of the demo API and the demonstration purposes of the project.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Details

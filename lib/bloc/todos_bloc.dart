@@ -13,6 +13,7 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   TodosBloc(this._repo) : super(const TodosState()) {
     on<AllTodosFetched>(_onAllTodosFetched);
     on<TodoCreated>(_onTodoCreated);
+    on<TodoCompletedChanged>(_onTodoCompletedChanged);
   }
 
   final TodosRepository _repo;
@@ -81,11 +82,12 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
       },
       (created) {
         if (created) {
-          print("TODOS BEFORE: ${state.todos}");
+          logger.d("TODOS BEFORE: ${state.todos}");
+
           final List<Todo> newTodos = List.from(state.todos);
           newTodos.insert(0, event.todo);
 
-          logger.i("NEW TODOS: ${newTodos}");
+          logger.d("NEW TODOS: $newTodos");
 
           emit(
             state.copyWith(
@@ -93,12 +95,71 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
               todos: newTodos,
             ),
           );
-        }
 
-        logger.d(
-          'CREATED NEW TODO: \n'
-          '${event.todo}',
+          logger.d(
+            'CREATED NEW TODO: \n'
+            '${event.todo}',
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> _onTodoCompletedChanged(
+    TodoCompletedChanged event,
+    Emitter<TodosState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: FormzStatus.submissionInProgress,
+        todos: changeItemInList(
+          initialList: state.todos,
+          index: event.index,
+          changeCompletedStatus: FormzStatus.submissionInProgress,
+        ),
+      ),
+    );
+
+    // Mock sending a request to the API and finish the TODOs
+    final Either<String, bool> res = await Future.delayed(
+      const Duration(seconds: 1),
+      () {
+        return const Right(true);
+      },
+    );
+
+    res.fold(
+      (error) {
+        logger.e(
+          'Failed to mark TODO as ${event.completed}. ERROR: \n'
+          '$error',
         );
+
+        emit(
+          state.copyWith(
+            status: FormzStatus.submissionFailure,
+            todos: changeItemInList(
+              initialList: state.todos,
+              index: event.index,
+              changeCompletedStatus: FormzStatus.submissionFailure,
+            ),
+          ),
+        );
+      },
+      (completed) {
+        if (completed) {
+          emit(
+            state.copyWith(
+              status: FormzStatus.submissionSuccess,
+              todos: changeItemInList(
+                initialList: state.todos,
+                index: event.index,
+                completed: event.completed,
+                changeCompletedStatus: FormzStatus.submissionSuccess,
+              ),
+            ),
+          );
+        }
       },
     );
   }

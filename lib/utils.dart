@@ -1,10 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:formz/formz.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:todos_app/bloc/todos_bloc.dart';
 import 'package:todos_app/colors.dart';
+import 'package:todos_app/models/todos.dart';
 import 'package:todos_app/repositories/todos_repository.dart';
 
 final Logger logger = Logger(
@@ -13,10 +13,6 @@ final Logger logger = Logger(
     errorMethodCount: 15,
   ),
 );
-
-Color getRandomColor() {
-  return CustomColors.colors[Random().nextInt(CustomColors.colors.length)];
-}
 
 final GetIt getIt = GetIt.instance;
 
@@ -30,6 +26,23 @@ Future<void> setUpGetIt() async {
       getIt.get<ITodoRepository>(),
     ),
   );
+}
+
+/// Changes a single item at [index] inside the [initialList] and provides a copy list as result.
+/// Only supports changing [Todo.completed] and [Todo.changeCompletedStatus]
+List<Todo> changeItemInList({
+  required List<Todo> initialList,
+  required int index,
+  bool? completed,
+  FormzStatus? changeCompletedStatus,
+}) {
+  final List<Todo> newTodos = List.from(initialList);
+  newTodos[index] = newTodos[index].copyWith(
+    completed: completed,
+    changeCompletedStatus: changeCompletedStatus,
+  );
+
+  return newTodos;
 }
 
 class CustomSnackBar {

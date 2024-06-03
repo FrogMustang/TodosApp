@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
@@ -68,7 +69,8 @@ class ITodoRepository implements TodosRepository {
       );
 
       // we use 201 because the API fakes the creation
-      if (res.statusCode == 201) {
+      // Plus the random rate of success just to showcase todos creation error
+      if (res.statusCode == 201 && Random().nextBool()) {
         return const Right(true);
       }
 
