@@ -6,7 +6,6 @@ import 'package:formz/formz.dart';
 import 'package:todos_app/bloc/todos_bloc.dart';
 import 'package:todos_app/colors.dart';
 import 'package:todos_app/models/todos.dart';
-import 'package:todos_app/utils.dart';
 import 'package:todos_app/widgets/create_todo_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,17 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: CustomColors.dark,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 size: 40,
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).padding.bottom),
+            SizedBox(height: 15 + MediaQuery.of(context).padding.bottom),
           ],
         ),
       ),
@@ -125,8 +113,6 @@ class _TodosListState extends State<TodosList> {
           itemBuilder: (context, index) {
             final Todo todo = state.todos[index];
             bool completed = todo.completed;
-
-            logger.d('Building TODO ${todo.id} (again)');
 
             return Opacity(
               key: Key(todo.title + todo.id.toString()),
