@@ -4,6 +4,12 @@ This project was created to showcase a small app that allows the user to track t
 
 > **_⚠️WARNING:_**  Creating a todo has been set to fail/succeed with a random 50/50 chance, so if you keep getting an error, it means you're unlucky 😜
 
+## Features I've worked on:
+For a detailed list of apps and features I've worked on, please check out my [LinkedIn](https://www.linkedin.com/in/madalin-broscareanu-62a7511a2/)
+
+If you want to see more demo apps, then check out my [Bored App](https://github.com/FrogMustang/BoredApp) and my other demo repo (the code is a bit outdated for this one) - [Flutter Demo Apps](https://github.com/FrogMustang/flutter_demo_apps)
+
+
 ## Purpose
 The purpose of the app was to display a nice code architecture and my overall preferred tech stack and coding style.
 
